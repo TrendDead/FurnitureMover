@@ -9,7 +9,7 @@ namespace FM.CoreGameplay
     public class HarpoonShot : VectorShot
     {
         private SpringJoint _springJoint;
-        private bool _isNowHit; // ћожно добавить возможность выпуска нескольких гарпунов одновременно
+        private bool _isNowHit; // ћожно сделать списком и добавить возможность выпуска нескольких гарпунов одновременно
 
         private void Start()
         {
@@ -31,6 +31,7 @@ namespace FM.CoreGameplay
             _springJoint.connectedBody = targetObject.GetComponent<Rigidbody>();
             _springJoint.autoConfigureConnectedAnchor = false;
             _springJoint.connectedAnchor = targetObject.transform.InverseTransformPoint(collisionPosition);
+            _springJoint.enableCollision = true;
 
             _getVectorMove.enabled = false;
             _getClickOnTheScreen.enabled = true;
