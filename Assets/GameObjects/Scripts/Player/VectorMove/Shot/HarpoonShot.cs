@@ -38,11 +38,11 @@ namespace FM.CoreGameplay
             _isNowHit = true;
         }
 
-        protected override void Action()
+        public override void Action()
         {
             if (_isNowHit)
             {
-                Debug.Log(_springJoint);
+                //Debug.Log(_springJoint);
                 Destroy(_springJoint);
                 _isNowHit = false;
                 _getVectorMove.enabled = true;

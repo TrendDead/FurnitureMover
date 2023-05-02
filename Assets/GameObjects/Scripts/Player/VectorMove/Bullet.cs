@@ -35,11 +35,11 @@ namespace FM.CoreGameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log("Collision");
+            //Debug.Log("Collision");
 
             if(collision.gameObject.tag == "HarpoonTarget")
             {
-            Debug.Log("Try Tag");
+           // Debug.Log("Try Tag");
                 Hit?.Invoke(collision.gameObject, collision.contacts[0].point);
                 Destroy(gameObject);
             }
@@ -49,7 +49,7 @@ namespace FM.CoreGameplay
         {
             if(other.tag == "Player")
             {
-                Debug.Log("Player");
+                //Debug.Log("Player");
                 GetComponent<Collider>().isTrigger = false;
             }
         }

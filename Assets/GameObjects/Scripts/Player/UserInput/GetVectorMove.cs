@@ -39,6 +39,7 @@ namespace FM.CoreGameplay
         }
         private Vector3 GetPointToWorldPoint(Vector2 pontVector)
         {
+            Debug.Log(_mainCamera.ScreenToWorldPoint(new Vector3(pontVector.x, pontVector.y, _mainCamera.nearClipPlane)));
             return _mainCamera.ScreenToWorldPoint(new Vector3(pontVector.x, pontVector.y, _mainCamera.nearClipPlane));
         }
 

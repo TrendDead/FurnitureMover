@@ -1,5 +1,6 @@
 ﻿namespace ArionDigital
 {
+    using FM.CoreGameplay;
     using UnityEngine;
 
     public class CrashCrate : MonoBehaviour
@@ -12,12 +13,16 @@
         [Header("Audio")]
         public AudioSource crashAudioClip;
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision collision)
         {
-            wholeCrate.enabled = false;
-            boxCollider.enabled = false;
-            fracturedCrate.SetActive(true);
-            crashAudioClip.Play();
+            if (collision.gameObject.tag == "Player")
+            {
+                wholeCrate.enabled = false;
+                boxCollider.enabled = false;
+                fracturedCrate.SetActive(true);
+                crashAudioClip.Play();
+                collision.gameObject.GetComponent<VectorShot>().Action();
+            }
         }
 
         [ContextMenu("Test")]

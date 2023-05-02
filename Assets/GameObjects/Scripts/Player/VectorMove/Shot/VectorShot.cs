@@ -29,7 +29,7 @@ namespace FM.CoreGameplay
             _getClickOnTheScreen.EventClick -= Action;
         }
 
-        protected abstract void Action();
+        public abstract void Action();
 
         protected virtual void Shot(Vector2 vectorShot)
         {
