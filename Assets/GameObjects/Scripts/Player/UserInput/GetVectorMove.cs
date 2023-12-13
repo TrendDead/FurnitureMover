@@ -15,31 +15,17 @@ namespace FM.CoreGameplay
 
         [SerializeField]
         private Camera _mainCamera;
+        [SerializeField]
+        private VectorMoveView _vectorMoveView;
 
+        private bool _isDrag = false;
         private Vector2 _startPosition;
         private Vector2 _dragPosition;
         private Vector2 _endPosition;
 
-        private LineRenderer _lr;
-
-        private void OnEnable()
-        {
-            //TODO: Перенести lineRender в отдельный компонент
-            //Временное решение
-            _lr = GetComponent<LineRenderer>();
-        }
-
-        private void ResetLineRender()
-        {
-            _lr.positionCount = 0;
-            for(int i = 0; i < _lr.positionCount; i++)
-            {
-                _lr.SetPosition(0, Vector3.zero);
-            }
-        }
         private Vector3 GetPointToWorldPoint(Vector2 pontVector)
         {
-            Debug.Log(_mainCamera.ScreenToWorldPoint(new Vector3(pontVector.x, pontVector.y, _mainCamera.nearClipPlane)));
+            //Debug.Log(_mainCamera.ScreenToWorldPoint(new Vector3(pontVector.x, pontVector.y, _mainCamera.nearClipPlane)));
             return _mainCamera.ScreenToWorldPoint(new Vector3(pontVector.x, pontVector.y, _mainCamera.nearClipPlane));
         }
 
@@ -47,24 +33,49 @@ namespace FM.CoreGameplay
         {
             _startPosition = eventData.position;
 
-            _lr.positionCount = 0;
-            _lr.positionCount = 2;
-            _lr.SetPosition(0, GetPointToWorldPoint(_startPosition));
+            //_vectorMoveView.LinePoints(0);
+            //_vectorMoveView.ResetPos();
+            _vectorMoveView.LinePoints(2);
+            
+            _vectorMoveView.AddPoint(0, GetPointToWorldPoint(_startPosition - new Vector2(_mainCamera.transform.position.x, _mainCamera.transform.position.y)));
+            _isDrag = true;
         }
+        
+        /// <summary>
+        /// Временное решение, для тестоа
+        /// </summary>
+        private void LateUpdate()
+        {
+            if (_isDrag)
+            {
+                _vectorMoveView.AddPoint(0, GetPointToWorldPoint(_startPosition - new Vector2(_mainCamera.transform.position.x, _mainCamera.transform.position.y)/* + new Vector2(transform.position.x, transform.position.y)*/));
+            }
+        }
+
 
         public void OnDrag(PointerEventData eventData)
         {
-            _dragPosition = (_startPosition - eventData.position) + _startPosition;
+            _dragPosition = -eventData.position + _startPosition * 2;
+            //_dragPosition = eventData.position * -1 + _startPosition * 2;
 
-            _lr.SetPosition(1, GetPointToWorldPoint(_dragPosition));
+            //_vectorMoveView.AddPoint(0, GetPointToWorldPoint(_startPosition));
+            //Debug.Log(GetPointToWorldPoint(eventData.position) - GetPointToWorldPoint(_startPosition));
+            _vectorMoveView.AddPoint(1, GetPointToWorldPoint(_dragPosition/* + new Vector2(transform.position.x, transform.position.y)*/));
+            
+            //_vectorMoveView.AddPoint(1, (GetPointToWorldPoint(_dragPosition) - GetPointToWorldPoint(_startPosition)).normalized * 2);
+            //_lr.SetPosition(1, GetPointToWorldPoint(_dragPosition));
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            _endPosition = (_startPosition - eventData.position) + _startPosition;
-            _lr.SetPosition(1, GetPointToWorldPoint(_endPosition));
+            _endPosition = -eventData.position + _startPosition * 2;
+
+            //_vectorMoveView.AddPoint(1, GetPointToWorldPoint(_endPosition));
+            //_lr.SetPosition(1, GetPointToWorldPoint(_endPosition));
             CreateVector?.Invoke(GetPointToWorldPoint(_endPosition) - GetPointToWorldPoint(_startPosition));
-            _lr.positionCount = 0;
+            // _vectorMoveView.LinePoints(1);
+            _isDrag = false;
+            _vectorMoveView.LinePoints(0);
         }
 
     }

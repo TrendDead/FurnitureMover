@@ -7,6 +7,8 @@ namespace FM.CoreGameplay
     /// </summary>
     public abstract class VectorShot : MonoBehaviour
     {
+        public GameObject LastTarget => _target;
+
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private float _speedShot;
         [SerializeField] private float _bulletLifeTime = 0.5f;
@@ -16,6 +18,7 @@ namespace FM.CoreGameplay
         [SerializeField] protected GetClickOnTheScreen _getClickOnTheScreen;
 
         protected Bullet _bullet;
+        protected GameObject _target;
 
         private void Awake()
         {

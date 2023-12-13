@@ -23,8 +23,11 @@ namespace FM.CoreGameplay
             _bullet.Hit += MakeHarpoon;
         }
 
-        private void MakeHarpoon(GameObject targetObject, Vector3 collisionPosition)
+        //TODO: Добавить изменение степени сжатия пружины в завасимости от расстояния объекта для сцепки
+        private void MakeHarpoon(GameObject targetObject, Vector3 collisionPosition) 
         {
+            _target = targetObject;
+
             gameObject.AddComponent(typeof(SpringJoint));
             _springJoint = gameObject.GetComponent<SpringJoint>();
 

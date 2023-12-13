@@ -21,7 +21,11 @@
                 boxCollider.enabled = false;
                 fracturedCrate.SetActive(true);
                 crashAudioClip.Play();
-                collision.gameObject.GetComponent<VectorShot>().Action();
+                var playerShoot = collision.gameObject.GetComponent<VectorShot>();
+                if (playerShoot.LastTarget == this.gameObject)
+                {
+                    playerShoot.Action();
+                }
             }
         }
 
